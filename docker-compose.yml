@@ -7,7 +7,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-    - ./server/database:/data/db
+    - ./database:/data/db
   server:
     build: server/
     #command: node ./server.js #здесь можно перезаписать CMD из Dockerfile в /server

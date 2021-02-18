@@ -22,7 +22,7 @@ export default {
       {
         text: 'First name',
         align: 'start',
-        sortable: false,
+        sortable: true,
         value: 'first_name',
       },
       {

@@ -46,55 +46,62 @@ app.get('/api/contacts/:id', function (req, res) {
   });
 });
 
-app.post("/api/contacts", jsonParser, function (req, res) {
+app.post('/api/contacts', jsonParser, function (req, res) {
 
-  if(!req.body) return res.sendStatus(400);
+  if (!req.body) return res.sendStatus(400);
 
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const number = req.body.number;
-  const contact = {firstName: firstName, lastName: lastName,number:number, isFavourite:false};
+  const contact = {
+    firstName: firstName,
+    lastName: lastName,
+    number: number,
+    isFavourite: false
+  };
 
   const collection = req.app.locals.collection;
-  collection.insertOne(contact, function(err, result){
-    if(err) return console.log(err);
+  collection.insertOne(contact, function (err, result) {
+    if (err) return console.log(err);
     res.send(user);
   });
 });
 
-app.put("/api/contacts", jsonParser, function(req, res){
+app.put('/api/contacts', jsonParser, function (req, res) {
 
-  if(!req.body) return res.sendStatus(400);
+  if (!req.body) return res.sendStatus(400);
   const id = new objectId(req.body.id);
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const number = req.body.number;
   const isFavourite = req.body.isFavourite;
-  const contact = {firstName: firstName, lastName: lastName,number:number, isFavourite:isFavourite};
+  const contact = {
+    firstName: firstName,
+    lastName: lastName,
+    number: number,
+    isFavourite: isFavourite
+  };
 
   const collection = req.app.locals.collection;
-  collection.findOneAndUpdate({_id: id}, { $set: contact},
-    {returnOriginal: false },function(err, result){
-      if(err) return console.log(err);
+  collection.findOneAndUpdate({ _id: id }, { $set: contact },
+    { returnOriginal: false }, function (err, result) {
+      if (err) return console.log(err);
       const user = result.value;
       res.send(user);
     });
 });
 
-app.delete("/api/contacts/:id", function(req, res){
-
+app.delete('/api/contacts/:id', function (req, res) {
   const id = new objectId(req.params.id);
   const collection = req.app.locals.collection;
-  collection.findOneAndDelete({_id: id}, function(err, result){
-    if(err) return console.log(err);
+  collection.findOneAndDelete({ _id: id }, function (err, result) {
+    if (err) return console.log(err);
     let user = result.value;
     res.send(user);
   });
 });
 
-
-
-process.on("SIGINT", () => {
+process.on('SIGINT', () => {
   console.log('Start shutdown...');
   dbClient.close();
   console.log('Server down!');

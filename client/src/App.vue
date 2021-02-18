@@ -7,6 +7,7 @@
 
 <script>
 import contactList from './components/contact-list.vue';
+
 // import preloader from './components/preloader.vue';
 
 export default {
@@ -24,7 +25,9 @@ export default {
       return this.$store.getters.preloader;
     },
   },
-
+  beforeMount() {
+    return this.$store.getters.updateContacts;
+  },
   data: () => ({
     //
   }),
