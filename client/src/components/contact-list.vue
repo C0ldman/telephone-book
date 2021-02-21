@@ -1,18 +1,5 @@
 <template>
-  <div>
-    <v-row justify="center">
-      <v-col cols="12"
-             md="8"
-             sm="6">
-        <v-text-field v-model="search"></v-text-field>
-      </v-col>
 
-    </v-row>
-
-    <v-row justify="center">
-      <v-col cols="12"
-             md="12"
-             sm="8">
   <v-data-table
     :headers="headers"
     :items="contacts"
@@ -22,50 +9,43 @@
     loading-text="Loading... Please wait"
     class="elevation-1"
   >
-    <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
+    <template v-slot:items="props">
+      <td>{{ props.item.first_name }}</td>
+      <td>{{ props.item.last_name }}</td>
+      <td>{{ props.item.number }}</td>
+      <td class="justify-center layout px-0">
+        <v-icon
+          small
+          class="mr-2"
+          @click="favourite(props.item)"
+        >
+          favourite
+        </v-icon>
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(props.item)"
+        >
+          edit
+        </v-icon>
+        <v-icon
+          small
+          @click="deleteItem(props.item)"
+        >
+          delete
+        </v-icon>
+      </td>
     </template>
     <template v-slot:no-data>
-      <v-btn
-        color="primary"
-        @click="initialize"
-      >
-        Reset
-      </v-btn>
+      No contscts avaliable
     </template>
   </v-data-table>
-      </v-col>
-    </v-row>
-    <v-row justify="center">
-      <v-col cols="10"
-             md="8"
-             sm="6">
-      <addNewUser class="add-new-btn"></addNewUser>
-      </v-col>
-    </v-row>
-  </div>
-</template>
-<script>
 
-import addNewUser from './add-new-user.vue';
+ </template>
+<script>
 
 export default {
   name: 'contact-list',
-  components: {
-    addNewUser,
-  },
   data: () => ({
     search: '',
     headers: [
@@ -86,6 +66,7 @@ export default {
         sortable: false,
         value: 'number',
       },
+      { text: 'Actions', value: 'name', sortable: false },
     ],
   }),
   props: {
@@ -94,6 +75,10 @@ export default {
     },
     preloader: {
       type: Boolean,
+    },
+    search: {
+      type: String,
+      default: '',
     },
   },
 

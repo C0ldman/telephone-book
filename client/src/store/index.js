@@ -20,10 +20,12 @@ export default new Vuex.Store({
         .then(() => {});
     },
     updateContacts: (state) => {
+      state.preloader = true;
       axios
         .get('http://localhost:3000/api/contacts')
         .then((response) => {
           state.contacts = response.data;
+          state.preloader = false;
         });
     },
   },
@@ -37,6 +39,7 @@ export default new Vuex.Store({
   },
   getters: {
     contacts: (state) => state.contacts,
+    favourite: (state) => state.contacts.filter((item) => item.isFavourite),
     preloader: (state) => state.preloader,
   },
   modules: {

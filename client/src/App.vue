@@ -1,25 +1,37 @@
 <template>
   <v-app>
-    <contactList :contacts="contacts" :preloader="preloader"></contactList>
+    <v-tabs>
+      <v-tab key="contacts-tab">Contacts</v-tab>
+      <v-tab key="favourite-tab">Favourite</v-tab>
+      <v-tab-item key="c">
+        <contactList :contacts="contacts" :preloader="preloader"></contactList>
+      </v-tab-item>
+      <v-tab-item key="f">
+        <contactList :contacts="favourite" :preloader="preloader"></contactList>
+      </v-tab-item>
+    </v-tabs>
+    <addNewUser></addNewUser>
 <!--    <preloader :show="preloader"></preloader>-->
   </v-app>
 </template>
 
 <script>
 import contactList from './components/contact-list.vue';
-
-// import preloader from './components/preloader.vue';
+import addNewUser from './components/add-new-user.vue';
 
 export default {
   name: 'App',
 
   components: {
     contactList,
-    // preloader,
+    addNewUser,
   },
   computed: {
     contacts() {
       return this.$store.getters.contacts;
+    },
+    favourite() {
+      return this.$store.getters.favourite;
     },
     preloader() {
       return this.$store.getters.preloader;
