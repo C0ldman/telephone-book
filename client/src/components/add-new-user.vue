@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn @click="openAddPopup">Add</v-btn>
+    <v-btn class="green" @click="openAddPopup">Add</v-btn>
     <v-dialog v-model="isAddOpened" max-width="600px" persistent>
       <v-card>
         <v-card-title>

@@ -1,53 +1,44 @@
 <template>
-
   <v-data-table
     :headers="headers"
     :items="contacts"
+    class="elevation-1"
     :items-per-page="5"
     :search="search"
     :loading="preloader"
-    loading-text="Loading... Please wait"
-    class="elevation-1"
-  >
-    <template v-slot:items="props">
-      <td>{{ props.item.first_name }}</td>
-      <td>{{ props.item.last_name }}</td>
-      <td>{{ props.item.number }}</td>
-      <td class="justify-center layout px-0">
-        <v-icon
-          small
-          class="mr-2"
-          @click="favourite(props.item)"
-        >
-          favourite
-        </v-icon>
-        <v-icon
-          small
-          class="mr-2"
-          @click="editItem(props.item)"
-        >
-          edit
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteItem(props.item)"
-        >
-          delete
-        </v-icon>
-      </td>
+    loading-text="Loading... Please wait">
+
+    <template v-slot:item.actions="{item}">
+      <v-icon
+        class="mr-2"
+        :class="{active: item.isFavourite}"
+        @click="favourite(item)"
+      >
+        mdi-account-heart-outline
+      </v-icon>
+      <v-icon
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-account-edit-outline
+      </v-icon>
+      <v-icon
+        @click="deleteItem(item)"
+      >
+        mdi-account-remove-outline
+      </v-icon>
     </template>
     <template v-slot:no-data>
       No contscts avaliable
     </template>
   </v-data-table>
 
- </template>
+</template>
 <script>
 
 export default {
   name: 'contact-list',
   data: () => ({
-    search: '',
     headers: [
       {
         text: 'First name',
@@ -66,7 +57,11 @@ export default {
         sortable: false,
         value: 'number',
       },
-      { text: 'Actions', value: 'name', sortable: false },
+      {
+        text: 'Actions',
+        value: 'actions',
+        sortable: false,
+      },
     ],
   }),
   props: {
@@ -81,12 +76,22 @@ export default {
       default: '',
     },
   },
-
+  methods: {
+    favourite(i) {
+      console.log(i);
+    },
+    editItem(i) {
+      console.log(i);
+    },
+    deleteItem(i) {
+      console.log(i);
+    },
+  },
 };
 </script>
 
 <style scope>
-v-row {
-  padding-bottom: 2em;
+.v-icon.mdi.active {
+  color: #ff9400;
 }
 </style>

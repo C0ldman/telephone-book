@@ -11,7 +11,6 @@
       </v-tab-item>
     </v-tabs>
     <addNewUser></addNewUser>
-<!--    <preloader :show="preloader"></preloader>-->
   </v-app>
 </template>
 
