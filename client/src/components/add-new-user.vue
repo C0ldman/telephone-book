@@ -111,7 +111,7 @@ export default {
         number: this.number,
       };
       this.$store.dispatch('addNewContact', contact).then(() => {
-        this.$store.dispatch('updateContacts');
+        this.$store.dispatch('getContacts');
       });
       this.cancel();
     },

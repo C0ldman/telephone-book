@@ -74,19 +74,10 @@ app.put('/api/contacts', jsonParser, function (req, res) {
   const lastName = req.body.lastName;
   const number = req.body.number;
   const isFavourite = req.body.isFavourite;
-  const contact = {
-    first_name: firstName,
-    last_name: lastName,
-    number: number,
-    isFavourite: isFavourite
-  };
+  const contact = req.body;
   const collection = req.app.locals.collection;
   collection.findOneAndUpdate({ _id: id }, { $set: contact },
-    { returnOriginal: false }, function (err, result) {
-      if (err) return console.log(err);
-      const user = result.value;
-      res.send(user);
-    });
+    { returnOriginal: false });
 });
 
 app.delete('/api/contacts/:id', function (req, res) {

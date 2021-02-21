@@ -16,10 +16,17 @@ export default new Vuex.Store({
         url: 'http://localhost:3000/api/contacts',
         data,
       };
-      axios(options)
-        .then(() => {});
+      axios(options);
     },
-    updateContacts: (state) => {
+    updateContact: (context, data) => {
+      const options = {
+        method: 'put',
+        url: 'http://localhost:3000/api/contacts',
+        data,
+      };
+      axios(options);
+    },
+    getContacts: (state) => {
       state.preloader = true;
       axios
         .get('http://localhost:3000/api/contacts')
@@ -33,15 +40,21 @@ export default new Vuex.Store({
     addNewContact: (context, data) => {
       context.commit('addNewContact', data);
     },
-    updateContacts: (context) => {
-      context.commit('updateContacts');
+    getContacts: (context) => {
+      context.commit('getContacts');
+    },
+    updateContact: (context, data) => {
+      context.commit('updateContact', data);
     },
   },
   getters: {
     contacts: (state) => state.contacts,
-    favourite: (state) => state.contacts.filter((item) => item.isFavourite),
-    preloader: (state) => state.preloader,
+    favourite:
+(state) => state.contacts.filter((item) => item.isFavourite),
+    preloader:
+(state) => state.preloader,
   },
   modules: {
-  },
+  }
+  ,
 });

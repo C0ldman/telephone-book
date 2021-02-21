@@ -77,14 +77,22 @@ export default {
     },
   },
   methods: {
-    favourite(i) {
-      console.log(i);
+    favourite(contact) {
+      const edited = {
+        first_name: contact.first_name,
+        last_name: contact.last_name,
+        number: contact.number,
+        isFavourite: !contact.isFavourite,
+      };
+      this.$store.dispatch('updateContact', edited).then(() => {
+        this.$store.dispatch('getContacts');
+      });
     },
-    editItem(i) {
-      console.log(i);
+    editItem(contact) {
+      console.log(contact);
     },
-    deleteItem(i) {
-      console.log(i);
+    deleteItem(contact) {
+      console.log(contact);
     },
   },
 };

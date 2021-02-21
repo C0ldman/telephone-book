@@ -37,7 +37,7 @@ export default {
     },
   },
   beforeMount() {
-    return this.$store.dispatch('updateContacts');
+    return this.$store.dispatch('getContacts');
   },
   data: () => ({
     //
