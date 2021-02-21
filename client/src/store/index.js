@@ -10,10 +10,15 @@ export default new Vuex.Store({
     preloader: false,
   },
   mutations: {
-  },
-  actions: {
-  },
-  getters: {
+    addNewContact: (context, data) => {
+      const options = {
+        method: 'post',
+        url: 'http://localhost:3000/api/contacts',
+        data,
+      };
+      axios(options)
+        .then(() => {});
+    },
     updateContacts: (state) => {
       axios
         .get('http://localhost:3000/api/contacts')
@@ -21,6 +26,16 @@ export default new Vuex.Store({
           state.contacts = response.data;
         });
     },
+  },
+  actions: {
+    addNewContact: (context, data) => {
+      context.commit('addNewContact', data);
+    },
+    updateContacts: (context) => {
+      context.commit('updateContacts');
+    },
+  },
+  getters: {
     contacts: (state) => state.contacts,
     preloader: (state) => state.preloader,
   },

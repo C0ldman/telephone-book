@@ -21,6 +21,7 @@ let dbClient;
 mongoClient.connect(function (err, client) {
   if (err) return console.log(err);
   dbClient = client;
+  if (dbClient) console.log("Dtabase connected!")
   app.locals.collection = client.db('telephone-book')
     .collection('contacts');
   app.listen(port, () => {
@@ -49,26 +50,24 @@ app.get('/api/contacts/:id', function (req, res) {
 app.post('/api/contacts', jsonParser, function (req, res) {
 
   if (!req.body) return res.sendStatus(400);
-
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const number = req.body.number;
   const contact = {
-    firstName: firstName,
-    lastName: lastName,
+    first_name: firstName,
+    last_name: lastName,
     number: number,
     isFavourite: false
   };
 
   const collection = req.app.locals.collection;
-  collection.insertOne(contact, function (err, result) {
+  collection.insert(contact, function (err, result) {
     if (err) return console.log(err);
-    res.send(user);
+    res.send(contact);
   });
 });
 
 app.put('/api/contacts', jsonParser, function (req, res) {
-
   if (!req.body) return res.sendStatus(400);
   const id = new objectId(req.body.id);
   const firstName = req.body.firstName;
@@ -76,12 +75,11 @@ app.put('/api/contacts', jsonParser, function (req, res) {
   const number = req.body.number;
   const isFavourite = req.body.isFavourite;
   const contact = {
-    firstName: firstName,
-    lastName: lastName,
+    first_name: firstName,
+    last_name: lastName,
     number: number,
     isFavourite: isFavourite
   };
-
   const collection = req.app.locals.collection;
   collection.findOneAndUpdate({ _id: id }, { $set: contact },
     { returnOriginal: false }, function (err, result) {

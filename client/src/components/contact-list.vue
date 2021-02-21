@@ -1,6 +1,18 @@
 <template>
   <div>
-  <v-text-field v-model="search"></v-text-field>
+    <v-row justify="center">
+      <v-col cols="12"
+             md="8"
+             sm="6">
+        <v-text-field v-model="search"></v-text-field>
+      </v-col>
+
+    </v-row>
+
+    <v-row justify="center">
+      <v-col cols="12"
+             md="12"
+             sm="8">
   <v-data-table
     :headers="headers"
     :items="contacts"
@@ -9,13 +21,51 @@
     :loading="preloader"
     loading-text="Loading... Please wait"
     class="elevation-1"
-  ></v-data-table>
+  >
+    <template v-slot:item.actions="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+    <template v-slot:no-data>
+      <v-btn
+        color="primary"
+        @click="initialize"
+      >
+        Reset
+      </v-btn>
+    </template>
+  </v-data-table>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="10"
+             md="8"
+             sm="6">
+      <addNewUser class="add-new-btn"></addNewUser>
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script>
 
+import addNewUser from './add-new-user.vue';
+
 export default {
   name: 'contact-list',
+  components: {
+    addNewUser,
+  },
   data: () => ({
     search: '',
     headers: [
@@ -46,5 +96,12 @@ export default {
       type: Boolean,
     },
   },
+
 };
 </script>
+
+<style scope>
+v-row {
+  padding-bottom: 2em;
+}
+</style>
