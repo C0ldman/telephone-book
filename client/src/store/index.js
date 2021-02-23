@@ -44,16 +44,12 @@ export default new Vuex.Store({
       };
       axios(options)
         .then((res) => {
-          console.log('data.is_favourite:', data.is_favourite);
-          console.log('res.data.is_favourite:', res.data.is_favourite);
-          if (data.is_favourite === res.data.is_favourite) {
-            Vue.notify({
-              group: 'user',
-              type: 'success',
-              title: 'Successful!',
-              text: `Contact ${res.data.first_name} ${res.data.last_name} updated!`,
-            });
-          }
+          Vue.notify({
+            group: 'user',
+            type: 'success',
+            title: 'Successful!',
+            text: `Contact ${res.data.first_name} ${res.data.last_name} updated!`,
+          });
         })
         .catch((e) => {
           console.log('Fail on update: ', e);

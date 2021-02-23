@@ -49,7 +49,7 @@
 
     </template>
     <template v-slot:no-data>
-      No contscts avaliable
+      {{placeholder}}
     </template>
   </v-data-table>
 
@@ -94,6 +94,10 @@ export default {
     search: {
       type: String,
       default: '',
+    },
+    placeholder: {
+      type: String,
+      default: 'No contacts avaliable',
     },
   },
   methods: {

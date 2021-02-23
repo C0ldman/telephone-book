@@ -1,29 +1,45 @@
 <template>
   <v-app>
+    <v-row>
+    <v-col>
+
+    <v-row class="mt-2" justify="space-around">
+      <v-col cols="4">
     <v-text-field class="search" v-model="search"
                   prepend-icon="mdi-card-search-outline"
                   label="Search"
                   clearable></v-text-field>
+      </v-col>
+      <v-col cols="1">
+        <add-new-user></add-new-user>
+      </v-col>
+    </v-row>
 
-    <v-tabs>
-      <v-tab key="contacts-tab">Contacts</v-tab>
-      <v-tab key="favourite-tab">Favourite</v-tab>
-      <v-tab-item key="c">
-        <contactList :contacts="contacts" @editContact="openEditor"
+    <v-row justify="center">
+      <v-col cols="8">
+        <v-tabs>
+          <v-tab key="contacts-tab">Contacts</v-tab>
+          <v-tab key="favourite-tab">Favourite</v-tab>
+          <v-tab-item key="c">
+            <contactList :contacts="contacts" @editContact="openEditor"
                      @toggleFavourite="toggleFavourite"
                      @deleteContact="deleteContact"
                      :search="search"
                      :preloader="preloader"></contactList>
-      </v-tab-item>
-      <v-tab-item key="f">
-        <contactList :contacts="favourite" @editContact="openEditor"
+            </v-tab-item>
+            <v-tab-item key="f">
+              <contactList :contacts="favourite" @editContact="openEditor"
                      @toggleFavourite="toggleFavourite"
                      @deleteContact="deleteContact"
                      :search="search"
+                           placeholder="No favourites contacts"
                      :preloader="preloader"></contactList>
-      </v-tab-item>
-    </v-tabs>
-    <add-new-user></add-new-user>
+            </v-tab-item>
+        </v-tabs>
+      </v-col>
+    </v-row>
+    </v-col>
+    </v-row>
     <user-editor :isEditorOpened="editMode" :contact="editingContact"
                  @closeEditor="closeEditor"
                  @saveContact="saveContact"></user-editor>
