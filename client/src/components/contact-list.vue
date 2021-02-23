@@ -15,7 +15,7 @@
             class="mr-2"
             v-bind="attrs" v-on="on"
             :class="{active: item.is_favourite}"
-            @click="favourite(item)"
+            @click="toggleFavourite(item)"
           >mdi-account-heart-outline
           </v-icon>
         </template>
@@ -39,7 +39,7 @@
         <template v-slot:activator="{ on, attrs }">
           <v-icon
             v-bind="attrs" v-on="on"
-            @click="deleteItem(item)"
+            @click="deleteContact(item)"
           >
             mdi-account-remove-outline
           </v-icon>
@@ -97,20 +97,14 @@ export default {
     },
   },
   methods: {
-    favourite(contact) {
-      const newContact = contact;
-      newContact.is_favourite = !newContact.is_favourite;
-      this.$store.dispatch('updateContact', contact).then(() => {
-        this.$store.dispatch('getContacts');
-      });
+    toggleFavourite(contact) {
+      this.$emit('toggleFavourite', { ...contact });
     },
     editItem(contact) {
-      console.log(contact);
+      this.$emit('editContact', { ...contact });
     },
-    deleteItem(contact) {
-      this.$store.dispatch('deleteContact', contact).then(() => {
-        this.$store.dispatch('getContacts');
-      });
+    deleteContact(contact) {
+      this.$emit('deleteContact', { ...contact });
     },
   },
 };

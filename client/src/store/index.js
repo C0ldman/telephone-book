@@ -62,7 +62,6 @@ export default new Vuex.Store({
         .get('http://localhost:3000/api/contacts')
         .then((response) => {
           state.contacts = response.data;
-          state.preloader = false;
         })
         .catch((e) => {
           console.log('Fail on load: ', e);
@@ -72,7 +71,8 @@ export default new Vuex.Store({
             title: 'Something went wrong!',
             text: 'Can\'t load contacts. Please, try again later',
           });
-        });
+        })
+        .finally(state.preloader = false);
     },
     deleteContact: (context, data) => {
       /* eslint-disable */

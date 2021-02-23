@@ -1,10 +1,9 @@
 <template>
   <div>
-    <v-btn class="green" @click="openAddPopup">Add</v-btn>
-    <v-dialog v-model="isAddOpened" max-width="600px" persistent>
+    <v-dialog v-model="isEditorOpened" max-width="600px" persistent>
       <v-card>
         <v-card-title>
-          <span class="headline">Add new contact</span>
+          <span class="headline">Edit contact</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -17,7 +16,7 @@
                 <v-text-field
                   label="First name*"
                   required
-                  v-model="firstName"
+                  v-model="contact.first_name"
                   :rules="[rules.required]"
                 ></v-text-field>
               </v-col>
@@ -29,8 +28,8 @@
                 sm="6"
               >
                 <v-text-field
-                  label="Last name*"
-                  v-model="lastName"
+                  label="Last name"
+                  v-model="contact.last_name"
                   :rules="[rules.required]"
                 ></v-text-field>
               </v-col>
@@ -39,8 +38,8 @@
               <v-col cols="12" md="4"
                      sm="6">
                 <v-text-field
-                  label="Telephone number*"
-                  v-model="number"
+                  label="Telephone number"
+                  v-model="contact.number"
                   type="tel"
                   :rules="[rules.required]"
                   @input="acceptNumber"
@@ -52,13 +51,6 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="clearFields"
-          >
-            Clear
-          </v-btn>
           <v-btn
             color="blue darken-1"
             text
@@ -81,38 +73,27 @@
 
 <script>
 export default {
-  name: 'add-new-user',
+  name: 'user-editor',
+  props: {
+    contact: {
+      type: Object,
+    },
+    isEditorOpened: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: () => ({
-    isAddOpened: false,
-    firstName: '',
-    lastName: '',
-    number: '',
     rules: {
       required: (value) => !!value || 'Required.',
     },
   }),
   methods: {
-    openAddPopup() {
-      this.isAddOpened = true;
-    },
-    clearFields() {
-      this.firstName = '';
-      this.lastName = '';
-      this.number = '';
-    },
     cancel() {
-      this.clearFields();
-      this.isAddOpened = false;
+      this.$emit('closeEditor');
     },
     saveContact() {
-      const contact = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        number: this.number,
-      };
-      this.$store.dispatch('addNewContact', contact).then(() => {
-        this.$store.dispatch('getContacts');
-      });
+      this.$emit('saveContact', this.contact);
       this.cancel();
     },
     acceptNumber() {
