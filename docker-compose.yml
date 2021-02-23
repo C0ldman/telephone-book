@@ -4,19 +4,29 @@ services:
     container_name: mongo
     hostname: mongo
     image: mongo
-    ports:
-      - "27017:27017"
+    networks:
+      - app-network
     volumes:
     - ./database:/data/db
+
   server:
     build: server/
     ports:
       - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - app-network
+    depends_on:
+      - mongo
     links:
       - mongo
+
   client:
     build: client/
+    networks:
+      - app-network
     ports:
       - "8080:8080"
-    depends_on:
-      - server
+networks:
+  app-network:
+    driver: bridge

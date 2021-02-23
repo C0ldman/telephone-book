@@ -1,9 +1,10 @@
 const cors = require('cors');
-const clientUrl = 'http://localhost:8081';
+const clientUrl = 'http://localhost:8080';
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const objectId = require('mongodb').ObjectID;
 const jsonParser = express.json();
+
 
 const corsOptions = {
   origin: clientUrl,
@@ -14,20 +15,25 @@ const port = 3000;
 
 const app = express();
 app.use(cors());
-const mongoClient = new MongoClient('mongodb://localhost:27017/', { useUnifiedTopology: true });
+const mongoClient = new MongoClient('mongodb://mongo:27017/', { useUnifiedTopology: true });
 
 let dbClient;
+let timer=setInterval(connect, 2000);
 
-mongoClient.connect(function (err, client) {
-  if (err) return console.log(err);
-  dbClient = client;
-  if (dbClient) console.log("Dtabase connected!")
-  app.locals.collection = client.db('telephone-book')
-    .collection('contacts');
-  app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+
+function connect() {
+  mongoClient.connect(function (err, client) {
+    if (err) return console.log(err);
+    clearInterval(timer);
+    dbClient = client;
+    if (dbClient) console.log("Database connected!")
+    app.locals.collection = client.db('telephone-book')
+        .collection('contacts');
+    app.listen(port, () => {
+      console.log(`Example app listening at http://localhost:${port}`);
+    });
   });
-});
+}
 
 app.get('/api/contacts', function (req, res) {
   const collection = req.app.locals.collection;
@@ -48,7 +54,6 @@ app.get('/api/contacts/:id', function (req, res) {
 });
 
 app.post('/api/contacts', jsonParser, function (req, res) {
-
   if (!req.body) return res.sendStatus(400);
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
