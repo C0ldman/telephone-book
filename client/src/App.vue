@@ -46,4 +46,7 @@ export default {
 </script>
 
 <style scoped>
+*{
+  font-family: Roboto, sans-serif;
+}
 </style>

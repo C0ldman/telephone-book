@@ -57,7 +57,7 @@ app.post('/api/contacts', jsonParser, function (req, res) {
     first_name: firstName,
     last_name: lastName,
     number: number,
-    isFavourite: false
+    is_favourite: false
   };
 
   const collection = req.app.locals.collection;
@@ -69,21 +69,23 @@ app.post('/api/contacts', jsonParser, function (req, res) {
 
 app.put('/api/contacts', jsonParser, function (req, res) {
   if (!req.body) return res.sendStatus(400);
-  const id = new objectId(req.body.id);
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-  const number = req.body.number;
-  const isFavourite = req.body.isFavourite;
-  const contact = req.body;
+  const id = new objectId(req.body._id);
+  const contact={
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    number: req.body.number,
+    is_favourite: req.body.is_favourite
+  }
   const collection = req.app.locals.collection;
   collection.findOneAndUpdate({ _id: id }, { $set: contact },
     { returnOriginal: false });
 });
 
-app.delete('/api/contacts/:id', function (req, res) {
+app.delete('/api/contacts/remove/:id', function (req, res) {
   const id = new objectId(req.params.id);
+  console.log('id:', id);
   const collection = req.app.locals.collection;
-  collection.findOneAndDelete({ _id: id }, function (err, result) {
+  collection.deleteOne({ _id: id }, function (err, result) {
     if (err) return console.log(err);
     let user = result.value;
     res.send(user);

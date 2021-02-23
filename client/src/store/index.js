@@ -35,6 +35,17 @@ export default new Vuex.Store({
           state.preloader = false;
         });
     },
+    deleteContact: (context, data) => {
+      /* eslint-disable */
+      const reqUrl = `http://localhost:3000/api/contacts/remove/${data._id}`;
+      /* eslint-enable */
+      const options = {
+        method: 'delete',
+        url: reqUrl,
+        data,
+      };
+      axios(options);
+    },
   },
   actions: {
     addNewContact: (context, data) => {
@@ -46,11 +57,14 @@ export default new Vuex.Store({
     updateContact: (context, data) => {
       context.commit('updateContact', data);
     },
+    deleteContact: (context, data) => {
+      context.commit('deleteContact', data);
+    },
   },
   getters: {
     contacts: (state) => state.contacts,
     favourite:
-(state) => state.contacts.filter((item) => item.isFavourite),
+(state) => state.contacts.filter((item) => item.is_favourite),
     preloader:
 (state) => state.preloader,
   },
