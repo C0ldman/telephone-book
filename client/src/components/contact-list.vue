@@ -9,24 +9,44 @@
     loading-text="Loading... Please wait">
 
     <template v-slot:item.actions="{item}">
-      <v-icon
-        class="mr-2"
-        :class="{active: item.is_favourite}"
-        @click="favourite(item)"
-      >
-        mdi-account-heart-outline
-      </v-icon>
-      <v-icon
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-account-edit-outline
-      </v-icon>
-      <v-icon
-        @click="deleteItem(item)"
-      >
-        mdi-account-remove-outline
-      </v-icon>
+      <v-tooltip bottom open-delay="650">
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            class="mr-2"
+            v-bind="attrs" v-on="on"
+            :class="{active: item.is_favourite}"
+            @click="favourite(item)"
+          >mdi-account-heart-outline
+          </v-icon>
+        </template>
+        <span>Favourite</span>
+      </v-tooltip>
+
+      <v-tooltip bottom open-delay="650">
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            class="mr-2"
+            v-bind="attrs" v-on="on"
+            @click="editItem(item)"
+          >
+            mdi-account-edit-outline
+          </v-icon>
+        </template>
+        <span>Edit</span>
+      </v-tooltip>
+
+      <v-tooltip bottom open-delay="650">
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            v-bind="attrs" v-on="on"
+            @click="deleteItem(item)"
+          >
+            mdi-account-remove-outline
+          </v-icon>
+        </template>
+        <span>Delete</span>
+      </v-tooltip>
+
     </template>
     <template v-slot:no-data>
       No contscts avaliable

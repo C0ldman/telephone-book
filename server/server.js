@@ -61,7 +61,7 @@ app.post('/api/contacts', jsonParser, function (req, res) {
   };
 
   const collection = req.app.locals.collection;
-  collection.insert(contact, function (err, result) {
+  collection.insertOne(contact, function (err, result) {
     if (err) return console.log(err);
     res.send(contact);
   });
@@ -83,7 +83,6 @@ app.put('/api/contacts', jsonParser, function (req, res) {
 
 app.delete('/api/contacts/remove/:id', function (req, res) {
   const id = new objectId(req.params.id);
-  console.log('id:', id);
   const collection = req.app.locals.collection;
   collection.deleteOne({ _id: id }, function (err, result) {
     if (err) return console.log(err);

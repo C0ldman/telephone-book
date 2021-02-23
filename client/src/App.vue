@@ -11,6 +11,7 @@
       </v-tab-item>
     </v-tabs>
     <addNewUser></addNewUser>
+    <notifications group="user" />
   </v-app>
 </template>
 

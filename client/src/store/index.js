@@ -16,7 +16,22 @@ export default new Vuex.Store({
         url: 'http://localhost:3000/api/contacts',
         data,
       };
-      axios(options);
+      axios(options)
+        .then((res) => Vue.notify({
+          group: 'user',
+          type: 'info',
+          title: 'Successful!',
+          text: `Contact ${res.data.first_name} ${res.data.last_name} saved!`,
+        }))
+        .catch((e) => {
+          console.log('Fail on save: ', e);
+          Vue.notify({
+            group: 'user',
+            type: 'error',
+            title: 'Something went wrong!',
+            text: 'Can\'t save contact. Please, try again later',
+          });
+        });
     },
     updateContact: (context, data) => {
       const options = {
@@ -24,7 +39,22 @@ export default new Vuex.Store({
         url: 'http://localhost:3000/api/contacts',
         data,
       };
-      axios(options);
+      axios(options)
+        .then((res) => Vue.notify({
+          group: 'user',
+          type: 'info',
+          title: 'Successful!',
+          text: `Contact ${res.data.first_name} ${res.data.last_name} updated!`,
+        }))
+        .catch((e) => {
+          console.log('Fail on update: ', e);
+          Vue.notify({
+            group: 'user',
+            type: 'error',
+            title: 'Something went wrong!',
+            text: 'Can\'t update contact. Please, try again later',
+          });
+        });
     },
     getContacts: (state) => {
       state.preloader = true;
@@ -33,6 +63,15 @@ export default new Vuex.Store({
         .then((response) => {
           state.contacts = response.data;
           state.preloader = false;
+        })
+        .catch((e) => {
+          console.log('Fail on load: ', e);
+          Vue.notify({
+            group: 'user',
+            type: 'error',
+            title: 'Something went wrong!',
+            text: 'Can\'t load contacts. Please, try again later',
+          });
         });
     },
     deleteContact: (context, data) => {
@@ -44,7 +83,25 @@ export default new Vuex.Store({
         url: reqUrl,
         data,
       };
-      axios(options);
+      axios(options)
+        .then((response) => {
+          const deleted = JSON.parse(response.config.data);
+          Vue.notify({
+            group: 'user',
+            type: 'warning',
+            title: 'Successful!',
+            text: `Contact ${deleted.first_name} ${deleted.last_name} removed!`,
+          });
+        })
+        .catch((e) => {
+          console.log('Fail on delete: ', e);
+          Vue.notify({
+            group: 'user',
+            type: 'error',
+            title: 'Something went wrong!',
+            text: 'Can\'t delete contact. Please, try again later',
+          });
+        });
     },
   },
   actions: {
