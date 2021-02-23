@@ -77,8 +77,11 @@ app.put('/api/contacts', jsonParser, function (req, res) {
     is_favourite: req.body.is_favourite
   }
   const collection = req.app.locals.collection;
-  collection.findOneAndUpdate({ _id: id }, { $set: contact },
-    { returnOriginal: false });
+  collection.findOneAndUpdate({ _id: id }, { $set: contact },{ returnOriginal: false },
+      function (err, result) {
+        if (err) return console.log(err);
+        res.send(contact);
+      });
 });
 
 app.delete('/api/contacts/remove/:id', function (req, res) {

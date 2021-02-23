@@ -28,7 +28,7 @@
                 sm="6"
               >
                 <v-text-field
-                  label="Last name"
+                  label="Last name*"
                   v-model="contact.last_name"
                   :rules="[rules.required]"
                 ></v-text-field>
@@ -38,7 +38,7 @@
               <v-col cols="12" md="4"
                      sm="6">
                 <v-text-field
-                  label="Telephone number"
+                  label="Telephone number*"
                   v-model="contact.number"
                   type="tel"
                   :rules="[rules.required]"

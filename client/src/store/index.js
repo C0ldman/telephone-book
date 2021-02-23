@@ -10,7 +10,8 @@ export default new Vuex.Store({
     preloader: false,
   },
   mutations: {
-    addNewContact: (context, data) => {
+    addNewContact: (state, data) => {
+      state.preloader = true;
       const options = {
         method: 'post',
         url: 'http://localhost:3000/api/contacts',
@@ -19,7 +20,7 @@ export default new Vuex.Store({
       axios(options)
         .then((res) => Vue.notify({
           group: 'user',
-          type: 'info',
+          type: 'success',
           title: 'Successful!',
           text: `Contact ${res.data.first_name} ${res.data.last_name} saved!`,
         }))
@@ -31,21 +32,29 @@ export default new Vuex.Store({
             title: 'Something went wrong!',
             text: 'Can\'t save contact. Please, try again later',
           });
-        });
+        })
+        .finally(state.preloader = false);
     },
-    updateContact: (context, data) => {
+    updateContact: (state, data) => {
+      state.preloader = true;
       const options = {
         method: 'put',
         url: 'http://localhost:3000/api/contacts',
         data,
       };
       axios(options)
-        .then((res) => Vue.notify({
-          group: 'user',
-          type: 'info',
-          title: 'Successful!',
-          text: `Contact ${res.data.first_name} ${res.data.last_name} updated!`,
-        }))
+        .then((res) => {
+          console.log('data.is_favourite:', data.is_favourite);
+          console.log('res.data.is_favourite:', res.data.is_favourite);
+          if (data.is_favourite === res.data.is_favourite) {
+            Vue.notify({
+              group: 'user',
+              type: 'success',
+              title: 'Successful!',
+              text: `Contact ${res.data.first_name} ${res.data.last_name} updated!`,
+            });
+          }
+        })
         .catch((e) => {
           console.log('Fail on update: ', e);
           Vue.notify({
@@ -54,7 +63,8 @@ export default new Vuex.Store({
             title: 'Something went wrong!',
             text: 'Can\'t update contact. Please, try again later',
           });
-        });
+        })
+        .finally(state.preloader = false);
     },
     getContacts: (state) => {
       state.preloader = true;
@@ -74,7 +84,8 @@ export default new Vuex.Store({
         })
         .finally(state.preloader = false);
     },
-    deleteContact: (context, data) => {
+    deleteContact: (state, data) => {
+      state.preloader = true;
       /* eslint-disable */
       const reqUrl = `http://localhost:3000/api/contacts/remove/${data._id}`;
       /* eslint-enable */
@@ -88,7 +99,7 @@ export default new Vuex.Store({
           const deleted = JSON.parse(response.config.data);
           Vue.notify({
             group: 'user',
-            type: 'warning',
+            type: 'warn',
             title: 'Successful!',
             text: `Contact ${deleted.first_name} ${deleted.last_name} removed!`,
           });
@@ -101,21 +112,22 @@ export default new Vuex.Store({
             title: 'Something went wrong!',
             text: 'Can\'t delete contact. Please, try again later',
           });
-        });
+        })
+        .finally(state.preloader = false);
     },
   },
   actions: {
-    addNewContact: (context, data) => {
-      context.commit('addNewContact', data);
+    addNewContact: (state, data) => {
+      state.commit('addNewContact', data);
     },
-    getContacts: (context) => {
-      context.commit('getContacts');
+    getContacts: (state) => {
+      state.commit('getContacts');
     },
-    updateContact: (context, data) => {
-      context.commit('updateContact', data);
+    updateContact: (state, data) => {
+      state.commit('updateContact', data);
     },
-    deleteContact: (context, data) => {
-      context.commit('deleteContact', data);
+    deleteContact: (state, data) => {
+      state.commit('deleteContact', data);
     },
   },
   getters: {
@@ -125,7 +137,4 @@ export default new Vuex.Store({
     preloader:
 (state) => state.preloader,
   },
-  modules: {
-  }
-  ,
 });

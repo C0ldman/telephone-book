@@ -1,5 +1,10 @@
 <template>
   <v-app>
+    <v-text-field class="search" v-model="search"
+                  prepend-icon="mdi-card-search-outline"
+                  label="Search"
+                  clearable></v-text-field>
+
     <v-tabs>
       <v-tab key="contacts-tab">Contacts</v-tab>
       <v-tab key="favourite-tab">Favourite</v-tab>
@@ -7,12 +12,14 @@
         <contactList :contacts="contacts" @editContact="openEditor"
                      @toggleFavourite="toggleFavourite"
                      @deleteContact="deleteContact"
+                     :search="search"
                      :preloader="preloader"></contactList>
       </v-tab-item>
       <v-tab-item key="f">
         <contactList :contacts="favourite" @editContact="openEditor"
                      @toggleFavourite="toggleFavourite"
                      @deleteContact="deleteContact"
+                     :search="search"
                      :preloader="preloader"></contactList>
       </v-tab-item>
     </v-tabs>
@@ -40,6 +47,7 @@ export default {
   data: () => ({
     editMode: false,
     editingContact: {},
+    search: '',
   }),
   methods: {
     openEditor(contact) {
